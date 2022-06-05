@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MsdynTimeentry.Tests.DataStorage
+namespace MsdynTimeentry.Tests
 {
     internal sealed class DataStorage : IDataStorage
     {

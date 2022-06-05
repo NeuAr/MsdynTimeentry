@@ -13,7 +13,7 @@ namespace MsdynTimeentry.BL
         private readonly IDataStorage dataStorage;
         private bool disposed = false;
 
-        BusinessLogicManager(IDataStorage dataStorage)
+        public BusinessLogicManager(IDataStorage dataStorage)
         {
             if (dataStorage is null)
                 throw new ArgumentNullException(nameof(dataStorage), "Data storage is null");

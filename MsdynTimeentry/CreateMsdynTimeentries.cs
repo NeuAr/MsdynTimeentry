@@ -1,12 +1,15 @@
 using System;
-using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
+using MsdynTimeentry.BL;
 using MsdynTimeentry.DataStorage;
-using Newtonsoft.Json;
+using MsdynTimeentry.Http;
+using MsdynTimeentry.Models;
+using MsdynTimeentry.Properties;
 
 namespace MsdynTimeentry
 {
@@ -20,19 +23,19 @@ namespace MsdynTimeentry
         }
 
         [FunctionName("CreateMsdynTimeentries")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, HttpMethod.Post, Route = null)] HttpRequest req)
         {
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            try
+            {
+                DateRange dateRange = await RequestsConverter.ConvertBodyTo<DateRange>(req, Encoding.UTF8.GetString(Resources.CreateMsdynTimeentriesRequestSchema));
+                using BusinessLogicManager businessLogicManager = new BusinessLogicManager(dataStorageFactory.Create());
+                int createdDatesCount = businessLogicManager.CreateNotExistsTimeentriesFromRange(dateRange.StartOn, dateRange.EndOn);
+                return new OkObjectResult("Timeentries created: " + createdDatesCount.ToString());
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
         }
     }
 }

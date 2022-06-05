@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MsdynTimeentry.Http
 {
-    internal static class RequestsConverter
+    public static class RequestsConverter
     {
         public static async Task<TTarget> ConvertBodyTo<TTarget>(HttpRequest req, string jsonSchema = null)
         {

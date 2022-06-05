@@ -6,7 +6,7 @@ namespace MsdynTimeentry.BL
 {
     internal class BusinessLogicManager : IDisposable
     {
-        private const string DateFormat = "%yyyy-%MM-%dd";
+        private const string DateFormat = "yyyy-MM-dd";
 
         private readonly DateTime dateMinValue = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -45,7 +45,7 @@ namespace MsdynTimeentry.BL
                 beginDate = beginDate.AddDays(1);
             }
 
-            return dataStorage.CreateTimeentries(createdDates);
+            return (createdDates.Count > 0) ? dataStorage.CreateTimeentries(createdDates) : 0;
         }
 
         public void Dispose()

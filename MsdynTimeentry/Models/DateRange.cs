@@ -2,7 +2,7 @@
 
 namespace MsdynTimeentry.Models
 {
-    internal class DateRange
+    public class DateRange
     {
         public DateTime StartOn { get; set; }
 

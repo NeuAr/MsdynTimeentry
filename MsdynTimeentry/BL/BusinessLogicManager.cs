@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MsdynTimeentry.BL
 {
-    internal class BusinessLogicManager : IDisposable
+    public class BusinessLogicManager : IDisposable
     {
         private const string DateFormat = "yyyy-MM-dd";
 

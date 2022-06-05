@@ -23,6 +23,9 @@ namespace MsdynTimeentry.BL
 
         public int CreateNotExistsTimeentriesFromRange(DateTime beginDate, DateTime endDate)
         {
+            beginDate = new DateTime(beginDate.Year, beginDate.Month, beginDate.Day, 0, 0, 0, DateTimeKind.Utc);
+            endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 0, 0, 0, DateTimeKind.Utc);
+
             if (beginDate < dateMinValue)
                 throw new ArgumentOutOfRangeException(nameof(beginDate), beginDate, "Begin date is less of minimum value (" + dateMinValue.ToString(DateFormat) + ")");
 

@@ -24,7 +24,7 @@ namespace MsdynTimeentry.Tests
             HashSet<string> resultDates = new HashSet<string>();
             foreach (DateTime date in Data)
             {
-                if (date >= beginDate && date < endDate)
+                if (date >= beginDate && date < endDate.AddDays(1))
                 {
                     string dateToString = date.ToString(resultDatesFormat);
                     if (!resultDates.Contains(dateToString))
